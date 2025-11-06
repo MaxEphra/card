@@ -28,13 +28,13 @@
       width:100%;
       height:100%;
       object-fit:cover;
-      filter:brightness(0.4) grayscale(0.3);
+      filter:brightness(0.7) grayscale(0.2);
     }
     .bg-overlay {
       position:fixed;
       inset:0;
       z-index:-1;
-      background:linear-gradient(135deg, rgba(10,10,10,0.8), rgba(30,30,30,0.9));
+      background:linear-gradient(135deg, rgba(10,10,10,0.6), rgba(30,30,30,0.7));
     }
 
     .card {
@@ -42,7 +42,7 @@
       display:flex;
       flex-direction:column;
       align-items:center;
-      background: rgba(20,20,20,0.9);
+      background: rgba(20,20,20,0.7);
       backdrop-filter: blur(15px);
       border-radius: 20px;
       padding:40px 25px;
@@ -308,8 +308,14 @@
     <div id="qrcode"></div>
 
     <div class="social-container">
-      <a class="social-button" href="https://wa.me/5511989321702" target="_blank">
-        <i class="fa fa-whatsapp"></i><span data-en="WhatsApp" data-pt="WhatsApp">WhatsApp</span>
+      <a class="social-button" href="https://tejholding.com" target="_blank">
+        <i class="fa fa-globe"></i><span data-en="TEJ Holding" data-pt="TEJ Holding">TEJ Holding</span>
+      </a>
+      <a class="social-button" href="https://tejbank.com" target="_blank">
+        <i class="fa fa-bank"></i><span data-en="TEJ BANK" data-pt="TEJ BANK">TEJ BANK</span>
+      </a>
+      <a class="social-button" href="https://tej.finance" target="_blank">
+        <i class="fa fa-money"></i><span data-en="TEJ Finance" data-pt="TEJ Finance">TEJ Finance</span>
       </a>
       <a class="social-button" href="mailto:support@tejbank.com">
         <i class="fa fa-envelope"></i><span data-en="Email" data-pt="Email">Email</span>
@@ -317,25 +323,20 @@
       <a class="social-button" href="https://www.instagram.com/tejbank.official?igsh=MWE0bXZlZW5kYWQ2Zg==" target="_blank">
         <i class="fa fa-instagram"></i><span data-en="Instagram" data-pt="Instagram">Instagram</span>
       </a>
-      <a class="social-button" href="https://tejbank.com" target="_blank">
-        <i class="fa fa-bank"></i><span data-en="TEJ BANK" data-pt="TEJ BANK">TEJ BANK</span>
-      </a>
-      <a class="social-button" href="https://tejholding.com" target="_blank">
-        <i class="fa fa-globe"></i><span data-en="TEJ Holding" data-pt="TEJ Holding">TEJ Holding</span>
-      </a>
-      <a class="social-button" href="https://tej.finance" target="_blank">
-        <i class="fa fa-globe"></i><span data-en="TEJ Finance" data-pt="TEJ Finance">TEJ Finance</span>
+      <a class="social-button" href="https://wa.me/5511989321702" target="_blank">
+        <i class="fa fa-whatsapp"></i><span data-en="WhatsApp" data-pt="WhatsApp">WhatsApp</span>
       </a>
     </div>
 
-    <button class="share-btn" id="shareBtn" data-en="Share Card" data-pt="Compartilhar Card">Compartilhar Card</button>
+    <button class="share-btn" id="shareBtn" data-en="Share" data-pt="Compartilhar Card">Compartilhar</button>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
   <script>
-    const cardURL = window.location.href;
+    // Usando o link fornecido para o QR Code e compartilhamento
+    const shareURL = "https://maxdeveloper.work";
     new QRCode(document.getElementById("qrcode"), {
-      text: cardURL,
+      text: shareURL,
       width: 180,
       height: 180,
       colorDark: "#000000",
@@ -351,18 +352,145 @@
           await navigator.share({
             title:'Max Ephra — TEJ HOLDING LLC',
             text:'Digital Business Card — Max Ephra',
-            url: cardURL
+            url: shareURL
           });
         } catch(e){ console.warn('Share failed', e); }
       } else {
-        const vcard = `BEGIN:VCARD\nVERSION:3.0\nFN:Max Ephra\nORG:TEJ HOLDING LLC\nTITLE:Executive Director\nTEL;TYPE=WORK,VOICE:+5511989321702\nEMAIL;TYPE=INTERNET:support@tejbank.com\nURL:${cardURL}\nEND:VCARD`;
-        const blob = new Blob([vcard], {type:'text/vcard'});
-        const a = document.createElement('a');
-        a.href = URL.createObjectURL(blob);
-        a.download = 'max-ephra.vcf';
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
+        // Fallback para navegadores que não suportam Web Share API
+        // Criando um menu de compartilhamento customizado
+        const shareMenu = document.createElement('div');
+        shareMenu.style.cssText = `
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: rgba(0,0,0,0.8);
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          z-index: 1000;
+          gap: 15px;
+        `;
+        
+        const shareTitle = document.createElement('h3');
+        shareTitle.textContent = 'Compartilhar via:';
+        shareTitle.style.cssText = 'color: white; margin-bottom: 20px;';
+        shareMenu.appendChild(shareTitle);
+        
+        // WhatsApp
+        const whatsappBtn = document.createElement('button');
+        whatsappBtn.innerHTML = '<i class="fa fa-whatsapp"></i> WhatsApp';
+        whatsappBtn.style.cssText = `
+          background: #25D366;
+          color: white;
+          border: none;
+          padding: 15px 25px;
+          border-radius: 10px;
+          font-size: 1rem;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          width: 200px;
+          justify-content: center;
+        `;
+        whatsappBtn.onclick = () => {
+          window.open(`https://wa.me/?text=${encodeURIComponent(shareURL)}`, '_blank');
+          document.body.removeChild(shareMenu);
+        };
+        shareMenu.appendChild(whatsappBtn);
+        
+        // Instagram
+        const instagramBtn = document.createElement('button');
+        instagramBtn.innerHTML = '<i class="fa fa-instagram"></i> Instagram';
+        instagramBtn.style.cssText = `
+          background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+          color: white;
+          border: none;
+          padding: 15px 25px;
+          border-radius: 10px;
+          font-size: 1rem;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          width: 200px;
+          justify-content: center;
+        `;
+        instagramBtn.onclick = () => {
+          window.open(`https://www.instagram.com/?url=${encodeURIComponent(shareURL)}`, '_blank');
+          document.body.removeChild(shareMenu);
+        };
+        shareMenu.appendChild(instagramBtn);
+        
+        // Telegram
+        const telegramBtn = document.createElement('button');
+        telegramBtn.innerHTML = '<i class="fa fa-telegram"></i> Telegram';
+        telegramBtn.style.cssText = `
+          background: #0088cc;
+          color: white;
+          border: none;
+          padding: 15px 25px;
+          border-radius: 10px;
+          font-size: 1rem;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          width: 200px;
+          justify-content: center;
+        `;
+        telegramBtn.onclick = () => {
+          window.open(`https://t.me/share/url?url=${encodeURIComponent(shareURL)}`, '_blank');
+          document.body.removeChild(shareMenu);
+        };
+        shareMenu.appendChild(telegramBtn);
+        
+        // Email
+        const emailBtn = document.createElement('button');
+        emailBtn.innerHTML = '<i class="fa fa-envelope"></i> Email';
+        emailBtn.style.cssText = `
+          background: #ea4335;
+          color: white;
+          border: none;
+          padding: 15px 25px;
+          border-radius: 10px;
+          font-size: 1rem;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          width: 200px;
+          justify-content: center;
+        `;
+        emailBtn.onclick = () => {
+          window.open(`mailto:?subject=Digital Business Card — Max Ephra&body=${encodeURIComponent(shareURL)}`);
+          document.body.removeChild(shareMenu);
+        };
+        shareMenu.appendChild(emailBtn);
+        
+        // Botão Fechar
+        const closeBtn = document.createElement('button');
+        closeBtn.textContent = 'Fechar';
+        closeBtn.style.cssText = `
+          background: #555;
+          color: white;
+          border: none;
+          padding: 15px 25px;
+          border-radius: 10px;
+          font-size: 1rem;
+          cursor: pointer;
+          margin-top: 20px;
+          width: 200px;
+        `;
+        closeBtn.onclick = () => {
+          document.body.removeChild(shareMenu);
+        };
+        shareMenu.appendChild(closeBtn);
+        
+        document.body.appendChild(shareMenu);
       }
     });
 
@@ -401,6 +529,7 @@
   </script>
 </body>
 </html>
+
 
 
 
