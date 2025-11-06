@@ -1,0 +1,465 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Digital Business Card — Max Ephra | TEJ HOLDING LLC</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+  <style>
+    /* Reset e estilos gerais */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: #0a0a0a;
+      color: #ffffff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+    
+    /* Background com vídeo - mais visível */
+    .bg-video {
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      overflow: hidden;
+    }
+    
+    .bg-video video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: brightness(0.7) contrast(1.1);
+    }
+    
+    .bg-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      background: linear-gradient(135deg, rgba(10, 10, 10, 0.6), rgba(20, 20, 20, 0.7));
+    }
+    
+    /* Cartão principal - mais transparente */
+    .card {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: rgba(15, 15, 15, 0.75);
+      backdrop-filter: blur(15px);
+      border-radius: 20px;
+      padding: 30px 25px;
+      width: 90%;
+      max-width: 380px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+    }
+    
+    /* Foto de perfil */
+    .photo {
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      background-image: url('./tej_logo.jpg');
+      background-size: cover;
+      background-position: center;
+      margin-bottom: 20px;
+      border: 3px solid #ffffff;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+      transition: all 0.3s ease;
+    }
+    
+    .photo:hover {
+      border-color: #4cc9f0;
+      box-shadow: 0 0 25px rgba(76, 201, 240, 0.4);
+    }
+    
+    /* Títulos */
+    h1 {
+      font-size: 1.7rem;
+      color: #ffffff;
+      text-align: center;
+      margin-bottom: 5px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+    
+    h2 {
+      font-size: 1.05rem;
+      color: #e0e0e0;
+      text-align: center;
+      margin-bottom: 20px;
+      font-weight: 400;
+      opacity: 0.9;
+    }
+    
+    /* QR Code */
+    #qrcode {
+      margin: 20px auto;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 16px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    /* Botões sociais */
+    .social-container {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 20px;
+    }
+    
+    .social-button {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 12px 15px;
+      border-radius: 12px;
+      transition: all 0.3s ease;
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .social-button i {
+      font-size: 24px;
+      color: #ffffff;
+      width: 30px;
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+    
+    .social-button span {
+      text-align: left;
+      display: block;
+      font-weight: 500;
+    }
+    
+    .social-button:hover {
+      background: rgba(255, 255, 255, 0.15);
+      transform: translateY(-2px);
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+    
+    /* Cores específicas para cada rede social no hover */
+    .social-button:nth-child(1):hover { /* WhatsApp */
+      background: rgba(37, 211, 102, 0.2);
+      border-color: rgba(37, 211, 102, 0.4);
+    }
+    
+    .social-button:nth-child(2):hover { /* Email */
+        background: rgba(37, 211, 102, 0.2);
+        border-color: rgba(37, 211, 102, 0.4);
+    }
+    
+    .social-button:nth-child(3):hover { /* Instagram */
+        background: rgba(37, 211, 102, 0.2);
+      border-color: rgba(37, 211, 102, 0.4);
+    }
+    
+    .social-button:nth-child(4):hover { /* TEJ BANK */
+        background: rgba(37, 211, 102, 0.2);
+      border-color: rgba(37, 211, 102, 0.4);
+    }
+    
+    .social-button:nth-child(5):hover { /* TEJ Holding */
+        background: rgba(37, 211, 102, 0.2);
+        border-color: rgba(37, 211, 102, 0.4);
+    }
+    
+    .social-button:nth-child(6):hover { /* TEJ Finance */
+        background: rgba(37, 211, 102, 0.2);
+      border-color: rgba(37, 211, 102, 0.4);
+    }
+    
+    .social-button:hover i {
+      transform: scale(1.1);
+    }
+    
+    /* Botão de compartilhar */
+    .share-btn, .nfc-btn {
+      margin-top: 15px;
+      padding: 12px 20px;
+      border-radius: 12px;
+      background: rgba(37, 211, 102, 0.2);
+      border-color: rgba(37, 211, 102, 0.4);
+      color: #ffffff;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+    
+    .share-btn:hover, .nfc-btn:hover {
+      background: rgba(37, 211, 102, 0.2);
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+    
+    /* Indicador de status NFC */
+    .nfc-status {
+      margin-top: 10px;
+      font-size: 0.9rem;
+      text-align: center;
+      color: #e0e0e0;
+      opacity: 0.8;
+    }
+    
+    /* Modal NFC */
+    .nfc-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .nfc-modal-content {
+      background: rgba(20, 20, 20, 0.9);
+      padding: 25px;
+      border-radius: 15px;
+      max-width: 90%;
+      width: 400px;
+      text-align: center;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .nfc-modal h3 {
+      margin-bottom: 15px;
+      color: #ffffff;
+    }
+    
+    .nfc-modal p {
+      margin-bottom: 20px;
+      color: #e0e0e0;
+    }
+    
+    .nfc-modal-close {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .nfc-modal-close:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+    
+    /* Responsividade */
+    @media (max-width: 480px) {
+      .card {
+        padding: 25px 20px;
+      }
+      
+      .photo {
+        width: 120px;
+        height: 120px;
+      }
+      
+      h1 {
+        font-size: 1.5rem;
+      }
+      
+      h2 {
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-video">
+    <video autoplay muted loop playsinline>
+      <source src="https://cdn.pixabay.com/video/2022/10/11/134428-759734802_tiny.mp4" type="video/mp4">
+    </video>
+  </div>
+  <div class="bg-overlay"></div>
+
+  <div class="card">
+    <div class="photo"></div>
+    <h1>Max Ephra</h1>
+    <h2>Executive Director — TEJ HOLDING LLC</h2>
+
+    <div id="qrcode"></div>
+
+    <div class="social-container">
+      <a class="social-button" href="https://wa.me/5511989321702" target="_blank">
+        <i class="fa fa-whatsapp"></i>
+        <span>WhatsApp</span>
+      </a>
+      <a class="social-button" href="mailto:support@tejbank.com">
+        <i class="fa fa-envelope"></i>
+        <span>Email</span>
+      </a>
+      <a class="social-button" href="https://www.instagram.com/tejbank01?igsh=MWE0bXZlZW5kYW5kYWQ2Zg==" target="_blank">
+        <i class="fa fa-instagram"></i>
+        <span>Instagram</span>
+      </a>
+      <a class="social-button" href="https://tejbank.com" target="_blank">
+        <i class="fa fa-bank"></i>
+        <span>TEJ BANK</span>
+      </a>
+      <a class="social-button" href="https://tejholding.com" target="_blank">
+        <i class="fa fa-globe"></i>
+        <span>TEJ Holding</span>
+      </a>
+      <a class="social-button" href="https://tej.finance" target="_blank">
+        <i class="fa fa-globe"></i>
+        <span>TEJ Finance</span>
+      </a>
+    </div>
+
+    <button class="share-btn" id="shareBtn">Share Card</button>
+    <button class="nfc-btn" id="nfcBtn">Write NFC Tag</button>
+    <div class="nfc-status" id="nfcStatus"></div>
+  </div>
+
+  <!-- Modal NFC -->
+  <div class="nfc-modal" id="nfcModal">
+    <div class="nfc-modal-content">
+      <h3>NFC Tag Writing</h3>
+      <p id="nfcModalMessage">Approach an NFC tag to your device to write your business card data.</p>
+      <button class="nfc-modal-close" id="nfcModalClose">Close</button>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
+  <script>
+    const cardURL = window.location.href;
+    new QRCode(document.getElementById("qrcode"), {
+      text: cardURL,
+      width: 180,
+      height: 180,
+      colorDark: "#ffffff",
+      colorLight: "rgba(15, 15, 15, 0)",
+      correctLevel: QRCode.CorrectLevel.H
+    });
+
+    const shareBtn = document.getElementById('shareBtn');
+    shareBtn.addEventListener('click', async () => {
+      if (navigator.share) {
+        try {
+          await navigator.share({
+            title: 'Max Ephra — TEJ HOLDING LLC',
+            text: 'Digital Business Card — Max Ephra',
+            url: cardURL
+          });
+        } catch (e) {
+          console.warn('Share failed', e);
+        }
+      } else {
+        const vcard = `BEGIN:VCARD\nVERSION:3.0\nFN:Max Ephra\nORG:TEJ HOLDING LLC\nTITLE:Executive Director\nTEL;TYPE=WORK,VOICE:+5511989321702\nEMAIL;TYPE=INTERNET:support@tejbank.com\nURL:${cardURL}\nEND:VCARD`;
+        const blob = new Blob([vcard], {type: 'text/vcard'});
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'max-ephra.vcf';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+      }
+    });
+
+    // NFC Implementation
+    const nfcBtn = document.getElementById('nfcBtn');
+    const nfcStatus = document.getElementById('nfcStatus');
+    const nfcModal = document.getElementById('nfcModal');
+    const nfcModalMessage = document.getElementById('nfcModalMessage');
+    const nfcModalClose = document.getElementById('nfcModalClose');
+
+    // Check if Web NFC is available
+    if ('NDEFReader' in window) {
+      nfcStatus.textContent = "NFC supported - Tap to write NFC tags";
+    } else {
+      nfcStatus.textContent = "NFC not supported in this browser";
+      nfcBtn.disabled = true;
+      nfcBtn.style.opacity = "0.5";
+    }
+
+    // NFC Writing Functionality
+    nfcBtn.addEventListener('click', async () => {
+      if (!('NDEFReader' in window)) {
+        nfcModalMessage.textContent = "Web NFC is not supported in your browser. Try using Chrome on Android.";
+        nfcModal.style.display = "flex";
+        return;
+      }
+
+      try {
+        const ndef = new NDEFReader();
+        
+        // Show modal with instructions
+        nfcModalMessage.textContent = "Approach an NFC tag to your device to write your business card data.";
+        nfcModal.style.display = "flex";
+        
+        // Generate vCard data
+        const vcardData = `BEGIN:VCARD
+VERSION:3.0
+FN:Max Ephra
+ORG:TEJ HOLDING LLC
+TITLE:Executive Director
+TEL;TYPE=WORK,VOICE:+5511989321702
+EMAIL;TYPE=INTERNET:support@tejbank.com
+URL:${cardURL}
+END:VCARD`;
+
+        await ndef.write({
+          records: [
+            { recordType: "url", data: cardURL },
+            { recordType: "text", data: "Max Ephra - TEJ HOLDING LLC" },
+            { recordType: "mime", mediaType: "text/vcard", data: vcardData }
+          ]
+        });
+        
+        nfcModalMessage.textContent = "NFC tag successfully written!";
+        nfcStatus.textContent = "NFC tag written successfully";
+        
+      } catch (error) {
+        console.error("Error writing NFC tag:", error);
+        nfcModalMessage.textContent = `Error writing NFC tag: ${error.message}`;
+        nfcStatus.textContent = "Error writing NFC tag";
+      }
+    });
+
+    // Close modal
+    nfcModalClose.addEventListener('click', () => {
+      nfcModal.style.display = "none";
+    });
+
+    // Close modal when clicking outside
+    nfcModal.addEventListener('click', (e) => {
+      if (e.target === nfcModal) {
+        nfcModal.style.display = "none";
+      }
+    });
+  </script>
+</body>
+</html>
+
+
+
+
+
+
